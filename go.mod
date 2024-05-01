@@ -1,4 +1,4 @@
-module cats-project
+module cats-social
 
 go 1.22.2
 
