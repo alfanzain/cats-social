@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cats-social/routes"
+	"catssocial/routes"
 	"database/sql"
 	"log"
 
@@ -41,7 +41,7 @@ func main() {
 	app := fiber.New()
 
 	// Register routes
-	routes.RouteRegister(app)
+	routes.Setup(app)
 
 	// Start the server on port 3000
 	err := app.Listen(":3000")
