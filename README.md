@@ -56,3 +56,11 @@ Table cat_matches {
   updated_at datetime
 }
 ```
+
+### What We Did
+
+#### Docker
+
+First time
+
+- `docker compose up --build` for idk seriously

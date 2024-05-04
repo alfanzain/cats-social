@@ -1,50 +1,28 @@
 package main
 
 import (
+	"catssocial/configs"
 	"catssocial/routes"
-	"database/sql"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/lib/pq"
 )
 
-var db *sql.DB
-
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "local_cats_social"
-)
-
-func Connect() error {
-	// var err error
-	// db, err = sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname))
-	// if err != nil {
-	// 	return err
-	// }
-	// if err = db.Ping(); err != nil {
-	// 	return err
-	// }
-	return nil
-}
-
 func main() {
-	// Connect with database
-	if err := Connect(); err != nil {
-		log.Fatal(err)
+	if err := configs.DatabaseConnect(); err != nil {
+		log.Fatal("Cannot connect database: ", err)
 	}
 
-	// Create a Fiber app
 	app := fiber.New()
+	routes.SetupRoutes(app)
 
-	// Register routes
-	routes.Setup(app)
+	config, err := configs.LoadConfig()
+	if err != nil {
+		log.Fatal("Cannot load config: ", err)
+	}
 
-	// Start the server on port 3000
-	err := app.Listen(":3000")
+	err = app.Listen(":" + config.APPPort)
 	if err != nil {
 		log.Fatal("Cannot start server: ", err)
 	}

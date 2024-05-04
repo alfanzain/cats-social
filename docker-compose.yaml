@@ -1,0 +1,36 @@
+services:
+  postgres: 
+    container_name: postgres
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    networks:
+      - catssocial_net
+
+  catssocial_server:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: catssocial_server
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_PARAMS=${DB_PARAMS}
+      - JWT_SECRET=${JWT_SECRET}
+      - BCRYPT_SALT=${BCRYPT_SALT}
+    depends_on:
+      - postgres
+    networks:
+      - catssocial_net
+
+networks:
+  catssocial_net:

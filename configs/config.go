@@ -22,16 +22,16 @@ type Config struct {
 
 func LoadConfig() (Config, error) {
 	config := Config{
-		DBName:     "",
-		DBHost:     "",
-		DBPort:     "",
-		DBUsername: "",
-		DBPassword: "",
+		DBName:     os.Getenv("DB_NAME"),
+		DBHost:     os.Getenv("DB_HOST"),
+		DBPort:     os.Getenv("DB_PORT"),
+		DBUsername: os.Getenv("DB_USERNAME"),
+		DBPassword: os.Getenv("DB_PASSWORD"),
 
-		APPPort: "3000",
-		ENV:     "development",
+		APPPort: os.Getenv("APP_PORT"),
+		ENV:     os.Getenv("APP_ENV"),
 
-		JWTSecret: "secret",
+		JWTSecret: os.Getenv("JWT_SECRET"),
 	}
 	salt, err := strconv.Atoi("8")
 	if err != nil {
@@ -39,7 +39,7 @@ func LoadConfig() (Config, error) {
 	}
 
 	if os.Getenv("APP_PORT") == "" {
-		config.APPPort = "3000"
+		config.APPPort = "8080"
 	}
 
 	config.BcryptSalt = salt
