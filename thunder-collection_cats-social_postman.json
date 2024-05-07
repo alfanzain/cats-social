@@ -1,0 +1,215 @@
+{
+    "info": {
+        "_postman_id": "b1b428c4-ba20-48a2-9c8a-4f32dcf81d90",
+        "name": "cats-social",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "/user",
+            "item": [
+                {
+                    "name": "User register - 409 email has registered",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/user/register",
+                            "path": [
+                                "{{API_V1}}",
+                                "user",
+                                "register"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n\t\"email\": \"miaw@gmail.com\",\n\t\"name\": \"pembantu miaw\",\n\t\"password\": \"password\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "User login",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/user/login",
+                            "path": [
+                                "{{API_V1}}",
+                                "user",
+                                "login"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "User register - 200",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/user/register",
+                            "path": [
+                                "{{API_V1}}",
+                                "user",
+                                "register"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n\t\"email\": \"miawaug@gmail.com\",\n\t\"name\": \"pembantu miaw\",\n\t\"password\": \"password\"\n}"
+                        }
+                    }
+                },
+                {
+                    "name": "User register - 400 validation",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/user/register",
+                            "path": [
+                                "{{API_V1}}",
+                                "user",
+                                "register"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            },
+                            "raw": "{\n\t\"email\": \"miawxgmail.com\",\n\t\"name\": \"pembantu miawxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n\t\"password\": \"passwordxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "/cat",
+            "item": [
+                {
+                    "name": "Add cat",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/cat",
+                            "path": [
+                                "{{API_V1}}",
+                                "cat"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.jo5Cm2nqCk5dTNsi7FZFIqUdKvcTcZWbOjrcasVlXIs"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Get cat",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/cat",
+                            "path": [
+                                "{{API_V1}}",
+                                "cat"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMSJ9.jo5Cm2nqCk5dTNsi7FZFIqUdKvcTcZWbOjrcasVlXIs"
+                            }
+                        ],
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmF0aW9uIjoxNzE0OTAxNDM2LCJ1c2VyX2lkIjoiMSJ9.dDREsWLcPnDF330jEQwqrUsep6k2rOISBmI5nqrGJ3Q",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update cat",
+                    "request": {
+                        "method": "PUT",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/cat/1",
+                            "path": [
+                                "{{API_V1}}",
+                                "cat",
+                                "1"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.nY9mFvJS6OTikNu2xGImKzBUpDjiXDy4QEPyUIza3rA"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Delete cat",
+                    "request": {
+                        "method": "DELETE",
+                        "url": {
+                            "raw": "{{HOST}}/{{API_V1}}/cat/1",
+                            "path": [
+                                "{{API_V1}}",
+                                "cat",
+                                "1"
+                            ],
+                            "host": [
+                                "{{host}}"
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.nY9mFvJS6OTikNu2xGImKzBUpDjiXDy4QEPyUIza3rA"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
