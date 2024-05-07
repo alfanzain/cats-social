@@ -5,6 +5,9 @@ import (
 	"catssocial/domains/responses"
 	"catssocial/entities"
 	"catssocial/helpers"
+	"database/sql"
+	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -18,19 +21,21 @@ func NewUserHandler() *UserHandler {
 	return &UserHandler{}
 }
 
+var (
+	ErrUserNotFound               = "user not found"
+	ErrUserEmailAlreadyRegistered = "email already registered"
+)
+
 func (u *UserHandler) Register(c *fiber.Ctx) error {
 	var request map[string]string
 
 	if err := c.BodyParser(&request); err != nil {
 		return c.SendStatus(http.StatusBadRequest)
 	}
-
-	password, _ := helpers.HashPassword(request["password"])
-
 	user := entities.UserRegisterInput{
 		Email:    request["email"],
 		Name:     request["name"],
-		Password: password,
+		Password: request["password"],
 	}
 
 	// Create a new validator instance
@@ -39,18 +44,30 @@ func (u *UserHandler) Register(c *fiber.Ctx) error {
 	// Validate the User struct
 	err := validate.Struct(user)
 	if err != nil {
-
-		return err
-		// Validation failed, handle the error
-		// return responses.SuccessCreated(c, responses.Payload{
-		// 	Message: "User registered successfully",
-		// 	Data: fiber.Map{
-		// 		"email":       newEmail,
-		// 		"name":        newUserName,
-		// 		"accessToken": token,
-		// 	},
-		// })
+		return responses.ClientErrorBadRequest(c, responses.ErrorPayload{
+			Err: err.Error(),
+		})
 	}
+
+	// Check email, has already registered?
+	var scannedEmail string
+	err = configs.DB.QueryRow(`SELECT email FROM users WHERE email = $1`, user.Email).Scan(&scannedEmail)
+
+	// If the error is sql.ErrNowRows, it means the email hasn't registered yet
+	if err != nil && !errors.Is(err, sql.ErrNoRows) {
+		log.Fatalln(err)
+		return err
+	}
+
+	if len(scannedEmail) > 0 {
+		return responses.ClientErrorConflict(c, responses.ErrorPayload{
+			Message: &ErrUserEmailAlreadyRegistered,
+			Err:     "",
+		})
+	}
+
+	// Hash password
+	user.Password, _ = helpers.HashPassword(request["password"])
 
 	// Insert user data into database
 	query := `INSERT INTO users (email, name, password) VALUES ($1, $2, $3) RETURNING id, name, email`
@@ -74,7 +91,7 @@ func (u *UserHandler) Register(c *fiber.Ctx) error {
 	// Generate JWT
 	token, err := helpers.GenerateAccessToken(strconv.Itoa(newUserID))
 	if err != nil {
-		return responses.ServerInternalServerError(c, err.Error())
+		return responses.ServerErrorInternalServerError(c, err.Error())
 	}
 
 	return responses.SuccessCreated(c, responses.Payload{
