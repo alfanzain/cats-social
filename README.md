@@ -64,3 +64,12 @@ Table cat_matches {
 First time
 
 - `docker compose up --build` for idk seriously
+
+#### Migrations
+- migrate create -ext sql -dir db/migrations -seq create_users_table
+- migrate -database postgres://postgres:password@postgres:5432/local_cats_social?sslmode=disable -path db/migrations up
+
+When migration failed
+- `psql -d local_cats_social -U postgres`
+- `DROP TABLE users;`
+- `TRUNCATE schema_migrations;`

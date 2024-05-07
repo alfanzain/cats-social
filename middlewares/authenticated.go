@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"catssocial/configs"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
@@ -18,6 +19,7 @@ func Authenticated() fiber.Handler {
 		},
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			if err != nil {
+				log.Println(err)
 				return fiber.ErrUnauthorized
 			}
 			return c.Next()
@@ -25,7 +27,13 @@ func Authenticated() fiber.Handler {
 		SuccessHandler: func(c *fiber.Ctx) error {
 			token := c.Locals("user").(*jwt.Token)
 			claims := token.Claims.(jwt.MapClaims)
+
+			// This line still bugged
+			// if JWT payload user_id is:
+			// - not string
+			// - not defined
 			userID := claims["user_id"].(string)
+			
 			c.Locals("user_id", userID)
 			return c.Next()
 		},

@@ -1,4 +1,5 @@
 FROM golang:1.22.2-alpine AS builder
+RUN apk --update add alpine-sdk
 
 # Set working directory
 WORKDIR /app
@@ -7,6 +8,8 @@ WORKDIR /app
 COPY . .
 
 # Download dependencies after copying the application code
+RUN echo $GOPATH
+RUN go get -u -d github.com/golang-migrate/migrate github.com/lib/pq
 RUN go mod download
 
 # Set environment variables (assuming env.sh sets them)
@@ -18,7 +21,7 @@ RUN go build -o main .
 # Switch to a minimal runtime image
 FROM alpine:latest
 
-# Copy the application binary and env.sh file (combined)
+# Copy the application binary
 COPY --from=builder /app/main /catssocial_server
 
 # Expose port 8080

@@ -11,6 +11,16 @@ services:
     networks:
       - catssocial_net
 
+  migrate:
+    image: migrate/migrate
+    networks:
+      - catssocial_net
+    volumes:
+      - ./db/migrations:/migrations
+    command: ["-path", "/migrations", "-database",  "postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable", "up"]
+    depends_on:
+      - postgres
+
   catssocial_server:
     build:
       context: .

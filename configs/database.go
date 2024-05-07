@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-var db *sql.DB
+var DB *sql.DB
 
 func DatabaseConnect() error {
 	config, err := LoadConfig()
@@ -21,11 +21,11 @@ func DatabaseConnect() error {
 		config.DBName,
 	)
 
-	db, err = sql.Open("postgres", url)
+	DB, err = sql.Open("postgres", url)
 	if err != nil {
 		return err
 	}
-	if err = db.Ping(); err != nil {
+	if err = DB.Ping(); err != nil {
 		return err
 	}
 	return nil

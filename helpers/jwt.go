@@ -7,7 +7,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-func GenerateAccessToken(username string, userID string) (string, error) {
+func GenerateAccessToken(userID string) (string, error) {
 	config, err := configs.LoadConfig()
 	if err != nil {
 		return "", err

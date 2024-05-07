@@ -2,8 +2,11 @@ package configs
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -21,6 +24,11 @@ type Config struct {
 }
 
 func LoadConfig() (Config, error) {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	config := Config{
 		DBName:     os.Getenv("DB_NAME"),
 		DBHost:     os.Getenv("DB_HOST"),
@@ -33,7 +41,7 @@ func LoadConfig() (Config, error) {
 
 		JWTSecret: os.Getenv("JWT_SECRET"),
 	}
-	salt, err := strconv.Atoi("8")
+	salt, err := strconv.Atoi(os.Getenv("BCRYPT_SALT"))
 	if err != nil {
 		return Config{}, fmt.Errorf("failed get bcrypt salt %v", err)
 	}
