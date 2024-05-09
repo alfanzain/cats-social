@@ -1,10 +1,9 @@
 package userhandler
 
 import (
+	userservice "catssocial/services/user"
 	userrepo "catssocial/repositories/user"
 	"catssocial/responses"
-	userservice "catssocial/services/user"
-	"net/http"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -20,7 +19,9 @@ func (u *UserHandler) Register(c *fiber.Ctx) error {
 	user := new(RegisterPayload)
 
 	if err := c.BodyParser(&user); err != nil {
-		return c.SendStatus(http.StatusBadRequest)
+		return responses.ClientErrorBadRequest(c, responses.ErrorPayload{
+			Err: err.Error(),
+		})
 	}
 
 	validate := validator.New()

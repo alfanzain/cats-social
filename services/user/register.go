@@ -35,6 +35,9 @@ func (u *UserService) Register(p *RegisterPayload) (*RegisterResult, error) {
 		Name:     p.Name,
 		Password: p.Password,
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	accessToken, err := helpers.GenerateAccessToken(user.ID)
 	if err != nil {

@@ -19,3 +19,11 @@ func ClientErrorConflict(c *fiber.Ctx, errorPayload ErrorPayload) error {
 		"data":    nil,
 	})
 }
+
+func ClientErrorNotFound(c *fiber.Ctx, errorPayload ErrorPayload) error {
+	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+		"message": errorPayload.Message,
+		"error":   errorPayload.Err,
+		"data":    nil,
+	})
+}
