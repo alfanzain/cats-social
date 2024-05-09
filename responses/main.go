@@ -6,6 +6,6 @@ type Payload struct {
 }
 
 type ErrorPayload struct {
-	Message *string `json:"message"`
+	Message string `json:"message"`
 	Err     string `json:"error"`
 }

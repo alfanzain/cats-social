@@ -4,8 +4,10 @@ import (
 	"catssocial/configs"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
+
+var JWT_SIGNING_METHOD = jwt.SigningMethodHS256
 
 func GenerateAccessToken(userID string) (string, error) {
 	config, err := configs.LoadConfig()
@@ -14,13 +16,16 @@ func GenerateAccessToken(userID string) (string, error) {
 	}
 	var secretKey = []byte(config.JWTSecret)
 
-	// expirationTime := time.Now().Add(8 * time.Hour)
-	expirationTime := time.Now().Add(2 * time.Minute)
+	// expiredAt := time.Now().Add(8 * time.Hour)
+	expiredAt := time.Now().Add(2 * time.Minute)
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id":    userID,
-		"expiration": expirationTime.Unix(),
-	})
+	claims := jwt.MapClaims{}
+	claims["exp"] = expiredAt
+
+	token := jwt.NewWithClaims(
+		jwt.SigningMethodHS256,
+		claims,
+	)
 
 	tokenString, err := token.SignedString(secretKey)
 	if err != nil {

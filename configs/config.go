@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 )
 
 type Config struct {
@@ -21,6 +22,7 @@ type Config struct {
 
 	JWTSecret  string
 	BcryptSalt int
+	Logger     *logrus.Logger
 }
 
 func LoadConfig() (Config, error) {
@@ -40,6 +42,7 @@ func LoadConfig() (Config, error) {
 		ENV:     os.Getenv("APP_ENV"),
 
 		JWTSecret: os.Getenv("JWT_SECRET"),
+		Logger:    LoggerConfig(),
 	}
 	salt, err := strconv.Atoi(os.Getenv("BCRYPT_SALT"))
 	if err != nil {
